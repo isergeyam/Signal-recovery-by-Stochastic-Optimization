@@ -1,0 +1,276 @@
+%\usepackage{multirow}
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{url}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\selectlanguage{russian}
+
+
+\def\uphi{\varphi}
+
+
+\def\r{{\hbox{\tiny\rm ,r}}}
+\def\l{{\hbox{\tiny\rm ,l}}}
+\def\up{\hbox{\tt red}}
+\def\dw{\hbox{\tt blue}}
+\def\mysix{8}
+\def\LwB{{\hbox{\rm LwB}}}
+\def\Riskopt{\Risk_{\hbox{\tiny\rm opt}}}
+\def\RiskS{{\hbox{\rm RiskS}}}
+\def\RiskoptS{\hbox{\rm RiskS}_{\hbox{\tiny\rm opt}}}
+\def\tRiskoptS{\hbox{\rm \scriptsize RiskS}_{\hbox{\tiny\rm opt}}}
+\def\Size{{\hbox{\rm Size}}}
+\def\mes{{\hbox{\rm mes}}}
+\def\cl{\mathop{\hbox{\rm cl}}}
+\def\inter{\mathop{\hbox{\rm int}}}
+\def\supp{\mathop{\hbox{\rm supp}}}
+\def\cond{\mathop{\hbox{\rm\small Cond}}}
+\def\I{{\cal I}}
+\def\tDiag{\hbox{\rm\scriptsize Diag}}
+\def\brA{{{A}}}
+\def\brB{{{B}}}
+\def\cX{{\cal X}}
+\def\brX{{\Y}}
+\def\brn{{\bar{n}}}
+\def\brF{{\bar{F}}}
+\def\bT{{\mathbf{T}}}
+\def\bK{{\mathbf{K}}}
+\newcommand{\half}{ \mbox{\small$\frac{1}{2}$}}
+\newcommand{\four}{\mbox{\small$\frac{1}{4}$}}
+\usepackage{amsfonts}
+\usepackage{epsfig}
+
+\def\Risk{{\hbox{\rm Risk}}}
+\def\Ker{\mathop{\hbox{\rm Ker}}}
+\def\cD{{\cal D}}
+\def\cZ{{\cal Z}}
+\def\cO{{\cal O}}
+\def\Erf{{\mathop{\hbox{\small\rm Erf}}}}
+\def\ErfInv{{\mathop{\hbox{\small\rm ErfInv}}}}
+\def\tErfInv{{\mathop{\hbox{\rm\tiny ErfInv}}}}
+\usepackage{amssymb}
+\def\SadVal{\mathop{\hbox{\rm SadVal}}}
+\def\cR{{\cal R}}
+\def\Diag{{\hbox{\rm Diag}}}
+\usepackage{graphicx}
+
+\oddsidemargin=0truecm
+\topmargin=-1truecm
+\textwidth=16.0truecm
+\textheight=23.0truecm
+\def\bR{{\mathbf{R}}}
+\def\bZ{{\mathbf{Z}}}
+\def\Opt{{\hbox{\rm Opt}}}
+\def\Ext{\hbox{\rm Ext}}
+\def\cA{{\cal A}}
+\def\cL{{\cal L}}
+\def\cU{{\cal U}}
+\def\cSG{{\cal SG}}
+\def\cT{{\cal T}}
+\def\cE{{\cal E}}
+\def\cP{{\cal P}}
+\def\cQ{{\cal Q}}
+\def\cR{{\cal R}}
+\def\cG{{\cal G}}
+\def\cH{{\cal H}}
+\def\cM{{\cal M}}
+\def\cX{{\cal X}}
+\def\cY{{\cal Y}}
+\def\cN{{\cal N}}
+\def\cC{{\cal C}}
+\def\cS{{\cal S}}
+\def\cK{{\cal K}}
+\def\cF{{\cal F}}
+\def\bE{{\mathbf{E}}}
+\def\bS{{\mathbf{S}}}
+\def\Prob{\hbox{\rm Prob}}
+\def\Erf{\hbox{\rm Erf}}
+\def\Argmin{\mathop{\hbox{\rm Argmin}}}
+\def\ML{{\mathrm{\tiny ML}}}
+\def\sML{{\textrm{\tiny ML}}}
+\def\VI{{\textrm{VI}}}
+\def\Proj{{\mathrm{Proj}}}
+\def\argmin{\mathop\mathrm{argmin}}
+
+\newtheorem{lemma}{Лемма}[section]
+\newtheorem{corollary}{Следствие}[section]
+\newtheorem{proposition}{Утверждение}[section]
+\newtheorem{remark}{Замечание}[section]
+\newtheorem{theorem}{Теорема}[section]
+\newtheorem{example}{Пример}[section]
+\newtheorem{definition}{Определение}[section]
+
+
+
+
+\makeatletter
+\def\@seccntformat#1{%
+  \expandafter\ifx\csname c@#1\endcsname\c@section\else
+  \csname the#1\endcsname\quad
+  \fi}
+\makeatother
+
+\title{Восстановление сигналов методами стохастической оптимизации}
+\author{Василевский Алексей, Григорянц Сергей, Потапов Георгий, Федорец Никита}
+\date{Октябрь 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Введение:}
+
+Пусть $\omega^K=(\omega_1, ..., \omega_K)$, $\omega_k=(\eta_k, y_k)$, где $\eta\in \mathbf{R}^{n\times m}$, $y_k\in \mathbf{R}^{m}$
+Предположим, что наблюдения описываются Generalized Linear Model, то есть условное математическое ожидание при условии $\eta$ по $y$ есть $f(\eta^Tx),\ f:R^m\rightarrow R^m$, где $x\in R^m$ -
+неизвестный вектор параметров.
+Цель - восстановить $x$ по наблюдениям $\omega^K$. Стандартный подход - выбрать функцию потерь и $l(y, \Theta):\mathbf{R}^m\times \mathbf{R}^m\rightarrow \mathbf{R}$ и восстановить $x$, как оптимальное решение оптимизационной задачи
+\begin{eqnarray}
+\min_{u\in\cal X}\mathbf{E}_{\omega\sim P_x}\{l(y,f(\eta^T u))\},
+  \label{1}
+\end{eqnarray}
+где $P_x$ - распределение наблюдений $\omega$, а $\cal X$ заранее известное множество параметров. Другими словами, это сводится к задаче стохастической оптимизации (1), у которой неточное решение ищется через наблюдения $\omega^K$.
+Это так же может быть сделано через усреднение
+\begin{eqnarray}
+  \frac{1}{K}\sum_{k=1}^{K}l(y_k,f(\eta_k^T u))
+    \label{2}
+  \end{eqnarray}
+математического ожидания (1) по $x\in \cal{X}$ методом {\em Sample Average Approximation} (SAA),
+или применив итеративный алгоритм стохастической оптимизации {\em Stochastic Approximation} (SA).\\
+Предполагая, что условная вероятность при условии $\eta$ $y$ индуцированно $P_x$ принадлежит известному параметрическому семейству 
+$\cP=\{P^\theta:\,
+\theta\in \Theta\subset\bR^m\},$
+в частности $P_{|\eta}^x=P^{f(\eta^Tx)}$, стандартный выбор функции потерь определяется с помощью максимального правдоподобия: при условии, что распределение $P$ имеет плотность $p_\theta$, тогда
+$$
+\ell(y,\theta)=-\ln(p_\theta(y)).
+$$\\
+Например, в классической линейной регрессии $m=1$, $f(s)=(1+e^{-s})^{-1}$, $\Theta =(0,1)$, и
+$P^{\theta}$, $\theta \in \Theta$, это распределение Бернулли, то есть $y$ принимает значение 1 с
+вероятностью $(1+\exp\{-\eta^T x\})^{-1}$ и 0 с соответствующей, тогда
+$$
+\ell(y,f(\eta^T u))=\ln(1+\exp\{\eta^T u\})-y\eta^T u.
+$$
+В этом случае, задача (1) становится задачей оптимизации
+\begin{equation}\label{ait1}
+\min_{u\in \cX} \bE_{(\eta,y)\sim P_x}\left\{\ln(1+\exp\{\eta^T u\})-y\eta^T u\right\},
+\end{equation}
+и ее SAA становится
+\begin{equation}\label{ait3}
+\min_{u\in \cX} {1\over K}\sum_{k=1}^K\left[\ln(1+\exp\{\eta_k^T u\})-y_k\eta_k^T u\right];
+\end{equation}
+Предполагая, что $\cX$ выпуклая, обе эти задачи становятся выпуклыми, что подразумевает возможность глобального решения SAA достаточно эффективно, аналогично использованию хороших свойств сходимости SA.\\
+Более обще, распределение наблюдений из экспоненциального семейства, отрицательная логарифмическая функция правдоподобия имеет вид
+\[
+\{\ell(y,\eta^T u)=F(\eta^T u)-y\eta^T u,
+\]
+с выпуклой функцией распределения $F$, и соответствующей минимизацией функции потерь
+$$
+\min_{u\in \cX} \bE_{(\eta,y)\sim P_x}
+\left\{F(\eta^Tu)-y\eta^Tu\right\}.
+$$
+В этом случае, так же как и в случае логистической регрессии, SAA или SA могут применяться для вычисления
+Оценки максимального правдоподобия параметра модели.
+Однако, что предположение на экспоненциальная семейство довольно сильное. Если 
+$$
+y=f(\eta^Tx)+\xi,\,\,\xi\sim\cN(0,\sigma^2I_m).
+$$
+ $\ell(\cdot)$ становится
+$$
+\min_{u\in \cX}\bE_{\eta\sim Q}\{\|f(\eta^T x)-f(\eta^T u)\|_2^2\},\newline
+\min_{u\in \cX}\left\{{1\over K}\sum_{k=1}^k\|y_k-f(\eta_k^T u)\|_2^2\right\},
+$$
+где $Q$ распределение $\eta$. Если $f$ нелинейна, тогда обе задачи обычно не выпуклы. 
+Цель следующего заключается в том, чтобы предложить альтернативу подгонке модели через (1) на основе ML
+ подхода с использованием функции потерь для оценки параметров.
+
+\subsection{Необходимые определения и факты:}
+\input{fields.tex}
+
+
+Далее, пусть $\cX{} \subset \bR^m$ - непустой выпуклый компакт, и $\cH$ -определённое на нём монотонное векторное поле. Вектор $z_*$ называется \emph{слабым решением} вариационного неравенства $\VI(\cX{}, \cH)$, ассоциированного с  если выполнено: 
+\begin{equation}
+    \label{v_i_weak}
+    \cH(z)^T(z - z_*) \ge 0, ~ \forall{x \in \cX{}} 
+\end{equation}
+
+Хорошо известно, что слабое решение всегда существует и при этом корень векторного поля им будет. Также в условиях непрерывности $\cH$ будет верно, что слабое решение будет также и сильным решением, то есть:
+\begin{equation}
+    \label{v_i_strong}
+    \cH(z_*)^T(z - z_*) \ge 0, ~ \forall{x \in \cX{}} 
+\end{equation}
+Также используется следующий факт:
+\begin{lemma}
+\label{very_good_lemma}
+    Если в условиях определения $\VI(\cX{}, \cH)$ поле $\cH$ строго монотонно с модулем монотонности $\varkappa \ge 0$, то слабое решение $z_*$ единственно и выполнено:
+    \begin{equation}
+        \label{v_i_lemma}
+        \cH(z)^T(z - z_*) \ge \varkappa||z - z_*||_2^2
+    \end{equation}
+\end{lemma}
+
+\subsection{Допускаемые предположения:}
+\input{assumptions.tex}
+\section{Основная идея:}
+Основная идея происходящего процесса заключается в том, что искомое $x \in \cX$ является корнем следующего векторного поля:
+\begin{equation}
+    \label{gz_def}
+    G(z) = F(z) - F(x),
+\end{equation}
+где $F$ определено выше. Тогда из предположений \textbf{A.1-3} будет следовать, что $G$ строго монотонно на $\cX$, из чего будет следовать что искомый корень единственен. Далее можно заметить,что корень является слабым решением  $\VI(G_{\omega^K})$. 
+, $$
+    z_{k}=\Proj_{\cX}[z_{k-1}-\gamma_k G(z_{k-1})],\,k=1,2,...,K,
+$$
+где
+\begin{itemize}
+    \item $\Proj_{\cX}[z]=\argmin_{u\in\cX} \|z-u\|_2;$
+    \item $\gamma_k>0$ данный размер шага;
+    \item начальная $z_0$ выбирается произвольно из $\cX$.
+\end{itemize}
+Известно, что в предположениях \textbf{A.1-3}, этот метод дает сколь угодно хорошее приближение решения
+для достаточно большого $K$. Трудность заключается в том, что значения $G$ неизвестны, а есть лишь реализации случайных величин. Поэтому необходимо ввести аналогичные векторные поля для наших наблюдений:
+\begin{equation}
+    \label{g_en_def}
+    G_{\eta,y}(z) =\eta f(\eta^Tz)- \eta y:
+\end{equation}
+
+\begin{lemma}
+\label{good_lemma}
+    $\forall{x} \in \cX{}$ верно:
+    \begin{enumerate}
+        \item  $\bE_{(\eta,y) \sim P_x} \{ G_{\eta,y}(z)\} = G(z)~ \forall{z \in \bR^n}$
+        \item $ ||F(x)||_2 \leq M$
+        \item  $\bE_{(\eta,y) \sim P_x} \{ ||G_{\eta,y}(z)||_2^2\} \leq 4M^2 ~ \forall{z \in \cX{}}$
+    \end{enumerate}
+\end{lemma}
+
+Данная теория даёт возможность пользоваться двумя стандартными подходами.
+
+\subsection{Аппроксимация средними}
+Лемма \eqref{good_lemma} говорит о том, что $G_{\eta,y}(z)$ есть несмещённая оценка $G(z)$ с равномерно ограниченными по $y,z$ конечными матожиданиями и дисперсией, поэтому поле \begin{equation}
+    \label{g_w}
+    G_{\omega^K}(z) =\frac{1}{K} \sum\limits_{k=1}^K[\eta_k f(\eta_k^Tz)- \eta_k y_k]
+\end{equation}
+равномерно сходится по распределению к $G(z)$ вследствие закона больших чисел. Тогда из строгой монотонности $f$ и леммы \eqref{very_good_lemma} будет следовать строгая монотонность $G_{\omega^K}(z)$, откуда в свою очередь следует то, что асимптотически почти наверное слабое решение $\VI{}(G_{\omega^K}, \cX)$ сходится к слабому решению $\VI{}(G, \cX)$, а предпоследнее уже можно вычислить эффективно.   
+
+\subsection{Стохастическая аппроксимация}
+Также можно воспользоваться стохастическим приближением, имея в виду несмещенность оценки $G_{(\eta_k,y_k)}(z)$ для $G(z)$. Тогда получим следующую реккуренту:
+\begin{equation}\label{logiteqSA}
+z_{k}=\Proj_{\cX}[z_{k-1}-\gamma_k G_{(\eta_k,y_k)}(z_{k-1})],\,1\leq k\leq K,
+\end{equation}
+Для нее верно следующее
+\begin{proposition}
+    В предположении выполнения \textbf{A.1-3}, с шагами: 
+   \begin{equation}\label{logiteq50}
+        \gamma_k=[\varkappa (k+1)]^{-1},\,k=1,2,...
+    \end{equation} 
+    Для любого сигнала $x \in \cX$ последовательность оценок $\widehat{x}_k(\omega^{k})=z_{k}$, полученная из рекурренты {\rm (\ref{logiteqSA}})
+    при $\omega_k=(\eta_k,y_k)$ для каждого $k$ подчиняется закону:
+    \begin{equation}\label{logiteq51}
+        \bE_{\omega^k\sim P_x^k}\left\{\|\widehat{x}_k(\omega^k)-x\|_2^2\right\}\leq {4M^2\over\varkappa^2(k+1)},\,k=0,1,...
+    \end{equation}
+\end{proposition}
+Из этого утверждения мы можем сделать вывод, что просто реализовав данную рекурренту мы получаем хорошее приближение для решения.
+\end{document}
+

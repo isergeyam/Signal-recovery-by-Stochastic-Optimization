@@ -1,0 +1,25 @@
+Авторы решают задачу в следующих предположениях:
+
+\begin{itemize}
+    \item \textbf{A.1.} Векторное поле $f$ непрерывно и монотонно, а векторное поле
+    \begin{equation}
+        \label{assumpt_1}
+        F(z) = \bE_{\eta \sim Q} \{\eta f(\eta^T z) \}
+    \end{equation}
+    корректно определено.
+    
+    \item \textbf{A.2.} $\cX$ --- непустое выпуклое компактное множество, а векторное поле $F$ монотонно и его модуль монотонности $\varkappa$ положителен.
+    
+    \item \textbf{A.3.} Для некоторого $M < \infty$ и любого $x \in \cX$ выполнено, что
+    \begin{equation}
+        \label{assumpt_3}
+        \bE_{\left(\eta, y\right) \sim P_x} \{\|\eta y\|_2^2 \} < M^2
+    \end{equation}
+    
+    Эти предположения выполнены, в частности, если все моменты случайной величины $\eta$ конечны, а $\bE_{\eta \sim Q} \{\eta \eta^T\} \succ \mathbf{0}$, а на поле $f$ наложены следующие условия:
+    \begin{enumerate}
+        \item $f$ непрерывно дифференцируема
+        \item $d^T f' d > 0$ ля всех $z$ и всех $d \neq 0$ 
+        \item $\|f(z)\|_2 \leqslant C(1 + \|z\|_2^p)$ для некоторых $C \geqslant 0,\ p \geqslant 0$ и всех $z$
+    \end{enumerate}
+\end{itemize}
