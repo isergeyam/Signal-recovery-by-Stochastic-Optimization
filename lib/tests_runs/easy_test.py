@@ -32,7 +32,6 @@ def test_on_easy_f(method, steps_num, x_num, graph_name):
     for ind, result in enumerate(results):
         diffs[ind] = np.linalg.norm(result - x_0)
     plt.plot(np.arange(steps_num), diffs)
-    plt.title(graph_name)
-    plt.xlabel("Количетсво шагов")
+    plt.xlabel("Количество шагов")
     plt.ylabel("Отклонение от истинного x")
     plt.show()
