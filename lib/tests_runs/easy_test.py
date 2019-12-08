@@ -20,8 +20,8 @@ def sphere_oracle(x):
     return x / res
 
 
-def test_on_easy_f(method, steps_num, x_num):
-    x_0 = np.array([0.5, 0.5])
+def test_on_easy_f(method, steps_num, x_num, graph_name):
+    x_0 = np.array([-0.8, 0])
     my_etas = etas(x_num)
     y_s = np.zeros(x_num)
     for ind, eta in enumerate(my_etas):
@@ -34,4 +34,6 @@ def test_on_easy_f(method, steps_num, x_num):
     for ind, result in enumerate(results):
         diffs[ind] = np.linalg.norm(result - x_0)
     plt.plot(np.arange(steps_num), diffs)
+    plt.xlabel("Количество шагов")
+    plt.ylabel("Отклонение от истинного x")
     plt.show()
