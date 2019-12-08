@@ -20,7 +20,7 @@ def scphere_oracle(x):
     return x / res
 
 
-def test_on_easy_f(method, steps_num, x_num, graph_name):
+def test_on_easy_f(method, steps_num, x_num, graph_name, figname):
     x_0 = np.array([-0.8, 0])
     my_etas = etas(x_num)
     y_s = np.zeros(x_num)
@@ -34,4 +34,6 @@ def test_on_easy_f(method, steps_num, x_num, graph_name):
     plt.plot(np.arange(steps_num), diffs)
     plt.xlabel("Количество шагов")
     plt.ylabel("Отклонение от истинного x")
+    plt.title(graph_name)
+    plt.savefig(figname)
     plt.show()
