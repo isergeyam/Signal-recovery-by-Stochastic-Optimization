@@ -16,7 +16,6 @@ def quasi_newton_method(field, x0: tp.Any, alpha, steps, projection_oracle, mode
 
     def BFGS(s, y, H):
         E = np.identity(s.size)
-        Hy = H @ y
         return (E - (s @ y.T) / np.dot(y, s)) @ H @ (E - (y @ s.T) / np.dot(y, s)) + (s @ s.T) / np.dot(y, s)
 
     if mode == 'SR1':
@@ -32,9 +31,10 @@ def quasi_newton_method(field, x0: tp.Any, alpha, steps, projection_oracle, mode
     history: tp.List[tp.Any] = [x0]
     for i in range(steps):
         old_x = x.copy()
-        x = x - alpha * H @ field(x) / 10
-        H = update(x - old_x, field(x) - field(old_x), H)
+        print(field(x))
+        x = x - alpha * H @ field(x) / (i + 1)
         x = projection_oracle(x)
+        H = update(x - old_x, field(x) - field(old_x), H)
         history.append(x)
 
     return history[:-1]
