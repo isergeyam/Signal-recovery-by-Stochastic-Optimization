@@ -42,7 +42,8 @@ def proj(x):
 
 
 plt.plot(xs, np.abs(sa_method(G, modulus_continuity,
-                              proj, steps, x0, etas, ys) - x_asteriks), label=r'$|x^*-x_k|$')
+                              proj, steps, x0, etas, ys) - x_asteriks),
+         label=r'$|x^*-x_k|$')
 
 plt.legend(loc='best')
 plt.xlabel("Iterations")
@@ -50,5 +51,5 @@ plt.ylabel("Difference")
 plt.ylim([0, 0.5])
 plt.title('One dimension GLM approximation.')
 
-plt.savefig('../data/SAA-onedim.png')
+# plt.savefig('../data/SAA-onedim.png')
 plt.show()
