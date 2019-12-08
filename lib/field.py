@@ -25,4 +25,3 @@ class SignalField(object):
         for eta in self.etas:
             res = res + eta @ self.f(eta.T @ vector)
         return res / self.K - self.presum
-
