@@ -4,6 +4,7 @@ import numpy as np
 from scipy.stats import multivariate_normal
 from sa_method import sa_method
 import matplotlib.pyplot as plt
+import random
 params = {'legend.fontsize': 15,
           'legend.handlelength': 2,
           'figure.figsize': (15, 10)}
@@ -15,6 +16,7 @@ steps = 1000
 xs = np.arange(1, steps + 1)
 x0 = np.array([[0], [0]])
 mult_normal = multivariate_normal(mean=[0, 0], cov=[[1, 0], [0, 1]])
+eta_samples = mult_normal.rvs(size=100)
 
 n = 2
 m = 1
@@ -25,7 +27,7 @@ def f(x):
 
 
 def etas():
-    return mult_normal.rvs(size=1).reshape(n, m)
+    return random.choice(eta_samples).reshape(n, m)
 
 
 def ys(eta):
@@ -45,10 +47,12 @@ def proj(x):
 
 x_estim = sa_method(G, modulus_continuity, proj, steps, x0, etas, ys)
 x_diff = np.apply_along_axis(np.linalg.norm, 1, x_estim - x_asteriks)
-plt.plot(xs, x_diff, label=r'$|x^*-x_k|^2$')
+plt.plot(xs, x_diff, label=r'$|x^*-x_k|$')
 plt.legend(loc='best')
 plt.xlabel("Iterations")
 plt.ylabel("Difference")
 plt.ylim([0, 0.5])
+plt.title('Two dimension GLM approximation.')
 
+plt.savefig('../data/SAA-multidim.png')
 plt.show()
