@@ -1,18 +1,15 @@
-from field import *
+import numpy as np
 
 
-def search_argmin_simple_GD(field, x0=None, mode='precision', L=None, **kwargs):
-    if x0 == None:
-        x0 = np.zeros(self.dimX)
-
+def search_argmin_simple_GD(f, x0, mode='precision', L=None, **kwargs):
     if L == None:
-        L = (lambda f, z: np.linalg.norm(f(z)) / 2)
-
+        L = np.linalg.norm(f(x0))
     x = x0
-    history = [x0]
+    history = [x.copy()]
+    criteria = lambda : True
 
     if mode == 'precision':
-        criteria = lambda : np.linalg.norm(x - history[-1]) < kwargs['precision'] and len(history > 1)
+        criteria = lambda : (np.linalg.norm(x - history[-1]) < kwargs['precision'] and len(history) > 1)
 
     elif mode == 'steps':
         steps_counted = iter(range(kwargs['steps']))
@@ -20,11 +17,15 @@ def search_argmin_simple_GD(field, x0=None, mode='precision', L=None, **kwargs):
 
 
     while not criteria():
-        x -= field(x) / L(f, x)
-        history.append(x)
+        history.append(x.copy())
+        L = max(L, np.linalg.norm(f(x)))
+        x -= f(x) / (2 * L)
 
-    return x, history
+    return (x, history)
 
 
+if __name__ == '__main__':
+    print(search_argmin_simple_GD((lambda x: x), np.ones(2), mode='precision', **{'precision':1e-4}))
+    print(search_argmin_simple_GD((lambda x: x), np.ones(2), mode='precision', **{'precision':1e-8}))
 
 
