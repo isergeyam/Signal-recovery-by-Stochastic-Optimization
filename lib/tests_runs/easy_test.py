@@ -34,6 +34,3 @@ def test_on_easy_f(method, steps_num, x_num):
         diffs[ind] = np.linalg.norm(result - x_0)
     plt.plot(np.arange(steps_num), diffs)
     plt.show()
-
-
-test_on_easy_f(NesterovMethod, 1000, 100)
