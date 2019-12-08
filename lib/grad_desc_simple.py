@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def search_argmin_simple_GD(f, x0, mode='precision', L=None, **kwargs):
+def _search_argmin_simple_GD(f, x0, mode='precision', L=None, **kwargs):
     if L == None:
         L = np.linalg.norm(f(x0))
     x = x0
@@ -23,6 +23,9 @@ def search_argmin_simple_GD(f, x0, mode='precision', L=None, **kwargs):
 
     return (x, np.array(history)[1:])
 
+
+def SimpleGDForMonotoneFields(field, start, steps_scale, steps_num):
+    return _search_argmin_simple_GD(field, start, mode='steps', L=steps_scale, **{'steps':steps_num})[1]
 
 if __name__ == '__main__':
     print(search_argmin_simple_GD((lambda x: x), np.ones(2), mode='precision', **{'precision':1e-4}))
