@@ -17,24 +17,21 @@ def _search_argmin_simple_GD(f, x0, mode='precision', L=None, **kwargs):
 
     elif mode == 'steps':
         steps_counted = iter(range(kwargs['steps']))
-        criteria = lambda : next(steps_counted, -1) != -1
+        criteria = lambda : next(steps_counted, -1) == -1
 
 
     while not criteria():
         history.append(x.copy())
-        L = max(L, np.linalg.norm(f(x)))
-        x -= f(x) / (2 * L)
+        L /= 0.993
+        x -= f(x) / (L)
         x = proj(x)
-
 
     return (x, np.array(history)[1:])
 
 
 def SimpleGDForMonotoneFields(field, start, steps_scale, steps_num, proj_oracle):
-    return _search_argmin_simple_GD(field, start, mode='steps', L=steps_scale, **{'steps':steps_num, 'proj_oracle':proj_oracle})[1]
-
-#if __name__ == '__main__':
-#    print(search_argmin_simple_GD((lambda x: x), np.ones(2), mode='precision', **{'precision':1e-4}))
-#    print(search_argmin_simple_GD((lambda x: x), np.ones(2), mode='precision', **{'precision':1e-8}))
+    X = _search_argmin_simple_GD(field, start, mode='steps', L=steps_scale, **{'steps':steps_num, 'proj_oracle':proj_oracle})[1]
+    print(X)
+    return _search_argmin_simple_GD(field, start, mode='steps', L=2/steps_scale, **{'steps':steps_num, 'proj_oracle':proj_oracle})[1]
 
 
