@@ -21,7 +21,7 @@ def search_argmin_simple_GD(f, x0, mode='precision', L=None, **kwargs):
         L = max(L, np.linalg.norm(f(x)))
         x -= f(x) / (2 * L)
 
-    return (x, history)
+    return (x, np.array(history)[1:])
 
 
 if __name__ == '__main__':
