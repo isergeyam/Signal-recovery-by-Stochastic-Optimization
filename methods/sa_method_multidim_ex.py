@@ -47,7 +47,7 @@ def run_saa_on_func(n, m, known_samples_size, steps, f, f_tex, f_name,
     plt.ylim([0, 0.5])
     plt.title(f'{n}-мерная GLM аппроксимация, стохастический метод для {f_tex}')
 
-    plt.savefig(f'../data/{n}-dim-saa-{f_name}.png')
+    # plt.savefig(f'../data/{n}-dim-saa-{f_name}.png')
     plt.show()
 
 
@@ -72,11 +72,11 @@ if __name__ == '__main__':
         return bernoulli.rvs(x[0][0], size=1).reshape(1, 1)
 
     plt.figure(4)
-    run_saa_on_func(1, 1, 10000, 10000, f2, f2_tex,
+    run_saa_on_func(1, 1, 100000, 100000, f2, f2_tex,
                     'regression', y2_theta, 0.1)
     plt.figure(5)
-    run_saa_on_func(2, 1, 10000, 10000, f2, f2_tex,
+    run_saa_on_func(2, 1, 100000, 100000, f2, f2_tex,
                     'regression', y2_theta, 0.1)
     plt.figure(6)
-    run_saa_on_func(3, 1, 10000, 10000, f2, f2_tex,
+    run_saa_on_func(3, 1, 100000, 100000, f2, f2_tex,
                     'regression', y2_theta, 0.1)
