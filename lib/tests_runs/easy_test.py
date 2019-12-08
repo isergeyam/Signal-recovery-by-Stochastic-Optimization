@@ -24,7 +24,9 @@ def test_on_easy_f(method, steps_num, x_num):
   for ind, eta in enumerate(my_etas):
     y_s[ind] = np.array(sps.norm.rvs(loc = easy_f(eta.T @ x_0), size=1))
   my_field = SignalField(easy_f, x_num, my_etas, y_s.reshape(x_num, 1), 2)
-  results = method(my_field, np.array([0.3, 0.3]), 1, steps_num, scphere_oracle)
-  print(results)
-
-test_on_easy_f(NesterovMethod, 1000, 100)
+  results = method(my_field, np.array([0.3, 0.3]), 1/10, steps_num, scphere_oracle)
+  diffs = np.zeros(steps_num)
+  for ind, result in enumerate(results):
+    diffs[ind] = np.linalg.norm(result - x_0)
+  plt.plot(np.arange(steps_num), diffs)
+  plt.show()
