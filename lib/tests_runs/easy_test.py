@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import scipy.stats as sps
 
 from lib.field import *
-from lib.nesterov import NesterovMethod
 
 
 def easy_f(x):
