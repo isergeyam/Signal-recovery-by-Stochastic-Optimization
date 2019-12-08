@@ -4,6 +4,10 @@ import numpy as np
 from scipy.stats import multivariate_normal
 from sa_method import sa_method
 import matplotlib.pyplot as plt
+params = {'legend.fontsize': 15,
+          'legend.handlelength': 2,
+          'figure.figsize': (15, 10)}
+plt.rcParams.update(params)
 
 x_asteriks = np.array([[1], [1]])
 modulus_continuity = 1
@@ -41,6 +45,10 @@ def proj(x):
 
 x_estim = sa_method(G, modulus_continuity, proj, steps, x0, etas, ys)
 x_diff = np.apply_along_axis(np.linalg.norm, 1, x_estim - x_asteriks)
-plt.plot(xs, x_diff)
+plt.plot(xs, x_diff, label=r'$|x^*-x_k|^2$')
+plt.legend(loc='best')
+plt.xlabel("Iterations")
+plt.ylabel("Difference")
+plt.ylim([0, 0.5])
 
 plt.show()
