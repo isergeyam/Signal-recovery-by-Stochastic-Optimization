@@ -19,7 +19,7 @@ def sphere_oracle(x):
         return x
     return x / res * 2
 
-def test_on_f(func, method, steps_num, x_num, graph_name, figname):
+def test_on_f(func, method, steps_num, x_num, graph_name, figname, scale=''):
     x_0 = np.array([-0.8, 0])
     my_etas = etas(x_num, 2)
     y_s = np.zeros(x_num)
@@ -35,11 +35,12 @@ def test_on_f(func, method, steps_num, x_num, graph_name, figname):
     plt.plot(np.arange(steps_num), diffs)
     plt.xlabel("Количество шагов")
     plt.ylabel("Отклонение от истинного x")
+    plt.yscale(scale)
     plt.title(graph_name)
     plt.savefig(figname)
     plt.show()
 
-def test_on_logregr(method, steps_num, x_num, graph_name, figname):
+def test_on_logregr(method, steps_num, x_num, graph_name, figname, scale=''):
     x_0 = np.array([-0.8, 0])
     my_etas = etas(x_num, 2)
     y_s = np.zeros(x_num)
@@ -54,11 +55,12 @@ def test_on_logregr(method, steps_num, x_num, graph_name, figname):
     plt.plot(np.arange(steps_num), diffs)
     plt.xlabel("Количество шагов")
     plt.ylabel("Отклонение от истинного x")
+    plt.yscale(scale)
     plt.title(graph_name)
     plt.savefig(figname)
     plt.show()
 
-def test_on_logreg_dim(method, steps_num, x_num, graph_name, figname, dim):
+def test_on_logreg_dim(method, steps_num, x_num, graph_name, figname, dim, scale=''):
     if dim < 4:
         dim = 4
     x_0 = np.zeros(dim)
@@ -77,9 +79,10 @@ def test_on_logreg_dim(method, steps_num, x_num, graph_name, figname, dim):
     plt.plot(np.arange(steps_num), diffs)
     plt.xlabel("Количество шагов")
     plt.ylabel("Отклонение от истинного x")
+    plt.yscale(scale)
     plt.title(graph_name)
     plt.savefig(figname)
     plt.show()
 
-def test_on_easy_f(method, steps_num, x_num, graph_name, figname):
-    test_on_f(easy_f, method, steps_num, x_num, graph_name, figname)
+def test_on_easy_f(method, steps_num, x_num, graph_name, figname, scale=''):
+    test_on_f(easy_f, method, steps_num, x_num, graph_name, figname, scale)
