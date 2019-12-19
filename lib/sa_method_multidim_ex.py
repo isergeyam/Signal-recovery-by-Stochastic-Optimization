@@ -38,16 +38,22 @@ def run_saa_on_func(n, m, known_samples_size, steps, f, f_tex, f_name,
             return x
         return 2*(x / np.linalg.norm(x))
 
-    x_estim = sa_method(G, modulus_continuity, proj, steps, x0, etas, ys)
+    x_estim = sa_method(G, modulus_continuity, proj,
+                        steps, x0, etas, ys)
+    shape = x_estim.shape
+    x_estim = x_estim.flatten()
+    x_estim = np.cumsum(x_estim) / np.arange(1, len(x_estim) + 1)
+    x_estim = x_estim.reshape(shape)
     x_diff = np.apply_along_axis(np.linalg.norm, 1, x_estim - x_asteriks)
     plt.plot(xs, x_diff, label=r'$|x^*-x_k|$')
     plt.legend(loc='best')
     plt.xlabel("Итерации")
     plt.ylabel("Разница")
     plt.ylim([0, 0.5])
-    plt.title(f'{n}-мерная GLM аппроксимация, стохастический метод для {f_tex}')
+    plt.title(
+        f'{n}-мерная GLM аппроксимация с усреднением, стохастический метод для {f_tex}')
 
-    # plt.savefig(f'../data/{n}-dim-saa-{f_name}.png')
+    plt.savefig(f'../data/{n}-dim-saa-{f_name}-avg.png')
     plt.show()
 
 
